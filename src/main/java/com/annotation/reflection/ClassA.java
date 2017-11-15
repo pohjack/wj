@@ -5,7 +5,6 @@ import com.annotation.reflection.MyAnnotation.TODO;
 @MyAnnotation(todo=TODO.processA)
 public class ClassA extends ParentClass implements InterfaceA{
 
-	@Override
 	public void AMethod() {
 		System.out.println("classA----method implyment from interface A");
 	}
