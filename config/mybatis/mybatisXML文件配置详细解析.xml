@@ -92,14 +92,13 @@
 		 <typeAlias alias="Merchant" type="com.mybatis.helloworld.bean.Merchant"/>
 		 
 		 <!--指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean ,包下所有的类都可以使用别名 -->
-		 <package name="com.mybatis.helloworld.bean"/>
-		 
 		 <!-- 每一个在包 com.mybatis.helloworld.bean 中的 Java Bean，在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名。
 		 	 比如 domain.blog.Author 的别名为 author；若有注解，则别名为其注解值。
 		 	 @Alias("author")
 			public class Author {
 			    ...
 			} -->
+		 <package name="com.mybatis.helloworld.bean"/>
 	</typeAliases>
 	
 	<typeHandlers>
@@ -159,8 +158,5 @@
 		<!-- 注册该包下的所有接口mapper类 -->
 		<package name="com.mybatis.helloworld。mapperInterfaces"/>
 	</mappers>
-
-	
-
 
 </configuration>
