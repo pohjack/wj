@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- properties属性配置 -->
+	<!-- 使用${propertyName}来引用对应的属性值 -->
+	<!-- resource属性引入外部properties文件 -->
+	<!-- 属性值的读取顺序： 1.在 properties 元素体内指定的属性首先被读取。 2.然后根据 properties 元素中的 resource 
+		属性读取类路径下属性文件或根据 url 属性指定的路径读取属性文件，并覆盖已读取的同名属性。 3.最后读取作为方法参数传递的属性，并覆盖已读取的同名属性 
+		通过方法参数传递的属性具有最高优先级，resource/url 属性中指定的配置文件次之，最低优先级的是 properties 属性中指定的属性 -->
+	<properties resource="jdbcConfig.properties">
+		<!--property标签配置属性键值对 -->
+		<property name="version" value="v1.0" />
+		<property name="type" value="JDBC" />
+	</properties>
+	
+	<!-- MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为  -->
+	<settings>
+		<!-- 配置影响的所有映射器中配置的缓存的全局开关,默认值true -->
+		<setting name="cacheEnabled" value="true" />
+		
+		<!-- 延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。 特定关联关系中可通过设置fetchType属性来覆盖该项的开关状态。默认值false -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		
+		<!-- 当开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载 -->
+		<setting name="aggressiveLazyLoading" value="true" />
+		
+		<!--是否允许单一语句返回多结果集  -->
+		<setting name="multipleResultSetsEnabled" value="true" />
+		
+		<!--使用列标签代替列名。不同的驱动在这方面会有不同的表现  -->
+		<setting name="useColumnLabel" value="true" />
+		
+		<!-- 是否允许 JDBC 支持自动生成主键 -->
+		<setting name="useGeneratedKeys" value="false" />
+		
+		<!--指定 MyBatis 应如何自动映射列到字段或属性。 NONE 表示取消自动映射；PARTIAL 只会自动映射没有定义嵌套结果集映射的结果集。 
+			FULL 会自动映射任意复杂的结果集（无论是否嵌套）  默认值PATIAL-->
+		<setting name="autoMappingBehavior" value="PARTIAL" />
+		
+		<!-- 指定发现自动映射目标未知列（或者未知属性类型）的行为。
+			NONE: 不做任何反应
+			WARNING: 输出提醒日志 ('org.apache.ibatis.session.AutoMappingUnknownColumnBehavior' 的日志等级必须设置为 WARN)
+			FAILING: 映射失败 (抛出 SqlSessionException) -->
+		<setting name="autoMappingUnknownColumnBehavior" value="WARNING" />
+		
+		<!--配置默认的执行器。SIMPLE 就是普通的执行器；REUSE 执行器会重用预处理语句（prepared statements）； 
+			BATCH 执行器将重用语句并执行批量更新  ,默认值simple-->
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		
+		<!--设置超时时间，它决定驱动等待数据库响应的秒数  -->
+		<setting name="defaultStatementTimeout" value="25" />
+		
+		<!-- 为驱动的结果集获取数量（fetchSize）设置一个提示值。此参数只可以在查询设置中被覆盖。 -->
+		<setting name="defaultFetchSize" value="100" />
+		
+		<!-- 允许在嵌套语句中使用分页（RowBounds）。如果允许使用则设置为false -->
+		<setting name="safeRowBoundsEnabled" value="false" />
+		
+		<!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射  -->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		
+		<!-- MyBatis 利用本地缓存机制（Local Cache）防止循环引用（circular references）和加速重复嵌套查询。 默认值为 SESSION，
+		这种情况下会缓存一个会话中执行的所有查询。 若设置值为 STATEMENT，本地会话仅用在语句执行上，对相同 SqlSession 的不同调用将不会共享数据。 -->
+		<setting name="localCacheScope" value="SESSION" />
+		
+		<!-- 当没有为参数提供特定的 JDBC 类型时，为空值指定 JDBC 类型。 某些驱动需要指定列的 JDBC 类型，多数情况直接用一般类型即可，
+		比如 NULL、VARCHAR 或 OTHER。 -->
+		<setting name="jdbcTypeForNull" value="OTHER" />
+		
+		<!-- 指定哪个对象的方法触发一次延迟加载 -->
+		<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString" />
+		
+		<!--    设置参数                                                                                   描述                                                                  默认值
+			defaultScriptingLanguage	指定动态 SQL 生成的默认语言。org.apache.ibatis.scripting.xmltags.XMLLanguageDriver
+			defaultEnumTypeHandler	Specifies the TypeHandler used by default for Enum. (Since: 3.4.5)	org.apache.ibatis.type.EnumTypeHandler
+			callSettersOnNulls	指定当结果集中值为 null 的时候是否调用映射对象的 setter（map 对象时为 put）方法，                                false
+								这对于有 Map.keySet() 依赖或 null 值初始化的时候是有用的。注意基本类型（int、boolean等）
+								是不能设置成 null 的。		
+			returnInstanceForEmptyRow	当返回行的所有列都是空时，MyBatis默认返回null。 当开启这个设置时，MyBatis会返回一个空实例。 
+										请注意，它也适用于嵌套的结果集 (i.e. collectioin and association)。（从3.4.2开始）	true | false	false
+			logPrefix	指定 MyBatis 增加到日志名称的前缀。	Any String	Not set
+			logImpl	指定 MyBatis 所用日志的具体实现，未指定时将自动查找。	SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING	Not set
+			proxyFactory	指定 Mybatis 创建具有延迟加载能力的对象所用到的代理工具。	CGLIB | JAVASSIST	JAVASSIST (MyBatis 3.3 or above)
+			vfsImpl	指定VFS的实现	自定义VFS的实现的类全限定名，以逗号分隔。	Not set
+			useActualParamName	允许使用方法签名中的名称作为语句参数名称。 为了使用该特性，你的工程必须采用Java 8编译，并且加上-parameters选项。（从3.4.1开始）	true | false	true
+			configurationFactory	指定一个提供Configuration实例的类. 这个被返回的Configuration实例是用来加载被反序列化对象的懒加载属性值. 这个类必须包含一个签名方法static Configuration getConfiguration(). (从 3.2.3 版本开始)	类型别名或者全类名.	Not set -->
+	</settings>
+	
+	<!--类型别名是为 Java 类型设置一个短的名字。它只和 XML 配置有关，存在的意义仅在于用来减少类完全限定名的冗余  -->
+	<typeAliases>
+		<!-- 使用Merchant别名代替对应的全类名 -->
+		 <typeAlias alias="Merchant" type="com.mybatis.helloworld.bean.Merchant"/>
+		 
+		 <!--指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean ,包下所有的类都可以使用别名 -->
+		 <!-- 每一个在包 com.mybatis.helloworld.bean 中的 Java Bean，在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名。
+		 	 比如 domain.blog.Author 的别名为 author；若有注解，则别名为其注解值。
+		 	 @Alias("author")
+			public class Author {
+			    ...
+			} -->
+		 <package name="com.mybatis.helloworld.bean"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<!-- mybatis 已经提供的大量的类型转换处理器 -->
+		<!-- 自定义类型处理器 ，具体做法为：实现 org.apache.ibatis.type.TypeHandler 接口， 或继承一个很便利的
+		类 org.apache.ibatis.type.BaseTypeHandler， 然后可以选择性地将它映射到一个 JDBC 类型。-->
+		<typeHandler handler="com.mybatis.helloworld.typehandler.DIYTypeHandler" javaType="String" jdbcType="varchar"/>
+		
+		<!--mybatis在指定包下查找对应的typeHandler  -->
+		<package name="com.mybatis.helloworld.typehandler"/>		
+	</typeHandlers>
+	
+	<!-- MyBatis 每次创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory）实例来完成。 默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认
+	构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。 如果想覆盖对象工厂的默认行为，则可以通过创建自己的对象工厂来实现 -->
+	<objectFactory type="com.mybatis.helloworld.objectfactory.DIYObjectFactory">
+		<property name="someProperty" value="100"/>
+	</objectFactory>
+	
+	<!-- 配置mybatis-plugins -->
+	<plugins>
+		<plugin interceptor="com.mybatis.helloworld.plugins.DIYPlugin">
+			<property name="someProperty" value="100"/>
+		</plugin>
+	</plugins>
+
+	
+	<environments default="development">
+		<environment id="development">
+			<!-- 事务管理器配置 
+				JDBC – 这个配置就是直接使用了 JDBC 的提交和回滚设置，它依赖于从数据源得到的连接来管理事务作用域。
+				MANAGED – 这个配置几乎没做什么。它从来不提交或回滚一个连接，而是让容器来管理事务的整个生命周期（比如 JEE 应用服务器的上下文）。 
+				    默认情况下它会关闭连接，然而一些容器并不希望这样，因此需要将 closeConnection 属性设置为 false 来阻止它默认的关闭行为
+			如果你正在使用 Spring + MyBatis，则没有必要配置事务管理器， 因为 Spring 模块会使用自带的管理器来覆盖前面的配置-->
+			<transactionManager type="JDBC" />
+			
+			<!-- 数据源配置   type的三种内建类型unpooled/pooled/jndi/第三方数据源 -->
+			<dataSource type="POOLED">
+				<!-- 使用properties属性值 -->
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 指定mapper文件的位置 -->
+	<mappers>
+		<mapper resource="mybatis/mapper/MerchantMapper.xml" />
+		
+		<!--接口+注解的方式需要配置对应的接口类 -->
+		<mapper class="com.mybatis.helloworld.MerchantMapperAnnotation" />
+		
+		<!-- url方式指定mapper.xml文件 -->
+		<mapper url="file:///var/mappers/AuthorMapper.xml"/>
+		
+		<!-- 注册该包下的所有接口mapper类 -->
+		<package name="com.mybatis.helloworld。mapperInterfaces"/>
+	</mappers>
+
+</configuration>

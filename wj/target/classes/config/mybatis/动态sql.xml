@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.helloworld">
+
+	<!-- if  -->
+	<select id="findActiveBlogWithTitleLike" resultType="Blog">
+	   SELECT * FROM BLOG WHERE state = ‘ACTIVE’ 
+	  <if test="title != null">
+	    AND title like #{title}
+	  </if>
+	  <if test="author != null and author.name != null">
+	    AND author_name like #{author.name}
+	  </if>
+	</select>
+	
+	<!--choose, when, otherwise(类似switch  case)  -->
+	<select id="findActiveBlogLike" resultType="Blog">
+	  SELECT * FROM BLOG WHERE state = ‘ACTIVE’
+	  <choose>
+	    <when test="title != null">
+	      AND title like #{title}
+	    </when>
+	    <when test="author != null and author.name != null">
+	      AND author_name like #{author.name}
+	    </when>
+	    <otherwise>
+	      AND featured = 1
+	    </otherwise>
+	  </choose>
+	</select>
+	
+	<!-- where元素 ：当有if子句条件成立的时候才会添加where关键字，若最后的内容是“AND”或“OR”开头的，where 元素也知道如何将他们去除-->
+	<select id="findActiveBlogLike"
+	     resultType="Blog">
+	  SELECT * FROM BLOG 
+	  <where> 
+	    <if test="state != null">
+	         state = #{state}
+	    </if> 
+	    <if test="title != null">
+	        AND title like #{title}
+	    </if>
+	    <if test="author != null and author.name != null">
+	        AND author_name like #{author.name}
+	    </if>
+	  </where>
+	</select>
+	
+	<!-- where元素的等价写法，prefixOverrides 属性会忽略通过管道分隔的文本序列（注意此例中的空格也是必要的）。它带来的结果就是所有在 prefixOverrides 
+	属性中指定的内容将被移除，并且插入 prefix 属性中指定的内容 -->
+	
+	<select id="findActiveBlogLike"
+	     resultType="Blog">
+	  SELECT * FROM BLOG 
+	  <trim prefix="WHERE" prefixOverrides="AND |OR ">
+	  	<if test="state != null">
+	         state = #{state}
+	    </if> 
+	    <if test="title != null">
+	        AND title like #{title}
+	    </if>
+	    <if test="author != null and author.name != null">
+	        AND author_name like #{author.name}
+	    </if>
+	 </trim>
+	</select>
+	
+	<!-- set 元素可以被用于动态包含需要更新的列-->
+	<update id="updateAuthorIfNecessary">
+	  update Author
+	    <set>
+	      <if test="username != null">username=#{username},</if>
+	      <if test="password != null">password=#{password},</if>
+	      <if test="email != null">email=#{email},</if>
+	      <if test="bio != null">bio=#{bio}</if>
+	    </set>
+	  where id=#{id}
+	</update>
+	
+	<!--等价写法  -->
+	<trim prefix="SET" suffixOverrides=",">
+	  ...
+	</trim>
+	
+	<!--foreach:集合遍历  -->
+	<select id="selectPostIn" resultType="domain.blog.Post">
+	  SELECT *
+	  FROM POST P
+	  WHERE ID in
+	  <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+	        #{item}
+	  </foreach>
+	</select>
+	
+	<!-- bind元素可以从 OGNL 表达式中创建一个变量并将其绑定到上下文 -->
+	<select id="selectBlogsLike" resultType="Blog">
+	  <bind name="pattern" value="'%' + _parameter.getTitle() + '%'" />
+	  SELECT * FROM BLOG
+	  WHERE title LIKE #{pattern}
+	</select>
+	
+	<!--Multi-db vendor support 根据不同的数据库厂商构建特定的语句 -->
+	<insert id="insert">
+	  <selectKey keyProperty="id" resultType="int" order="BEFORE">
+	    <if test="_databaseId == 'oracle'">
+	      select seq_users.nextval from dual
+	    </if>
+	    <if test="_databaseId == 'db2'">
+	      select nextval for seq_users from sysibm.sysdummy1"
+	    </if>
+	  </selectKey>
+	  insert into users values (#{id}, #{name})
+	</insert>
+</mapper>
