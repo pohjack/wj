@@ -3,12 +3,14 @@ package com.thread;
 public class Calculator {
 	
 	public static void main(String[] args) {
-		for(int i=0;i<100;i++){
+		long start=System.currentTimeMillis();
+		for(int i=0;i<10;i++){
 			Thread t=new Thread(){
 				long j=0;
 				public void run(){
 					for(int k=0;k<Integer.MAX_VALUE;k++){
-						j+=k;
+						j+=k*Math.PI+k/Math.PI+Math.PI*Math.E/3.698587447894747;
+						
 					}
 					System.out.println(Thread.currentThread().getName()+"---"+j);
 				}
@@ -21,6 +23,8 @@ public class Calculator {
 //			}
 //			System.out.println(Thread.currentThread().getName()+"--"+i+"---"+j);
 		}
+		long end=System.currentTimeMillis();
+		System.out.println("耗时："+(end-start)/1000);
 	}
 	
 }

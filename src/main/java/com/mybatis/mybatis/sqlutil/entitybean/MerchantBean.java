@@ -2,9 +2,11 @@ package com.mybatis.mybatis.sqlutil.entitybean;
 
 import java.util.Map;
 
+import com.mybatis.mybatis.sqlutil.SQL;
 import com.mybatis.mybatis.sqlutil.annotation.DataMapping;
 import com.mybatis.mybatis.sqlutil.basebean.AbstractBaseBean;
 import com.mybatis.mybatis.sqlutil.basebean.BaseBean;
+import com.mybatis.mybatis.sqlutil.basebean.FieldInfo;
 
 /**
  * @author: wj
@@ -58,7 +60,19 @@ public class MerchantBean extends AbstractBaseBean {
 
 	@Override
 	public String generateSql() {
-		return getMetaData().getTableName()+"==="+getMetaData().getColumns();
+		String tableName=getMetaData().getTableName();
+		Map<String, Object> columns=getMetaData().getColumns();
+		SQL sqlBuilder=new SQL();
+		sqlBuilder.UPDATE(tableName).WHERE("table_pk_value=123");
+		if(columns!=null && columns.size()>0){
+			for(Map.Entry<String, Object> m :columns.entrySet()){
+				FieldInfo f=(FieldInfo) m.getValue();
+				sqlBuilder.SET(f.getAnnotationName()+"="+f.getFieldValue());
+			}
+			return sqlBuilder.toString();
+		}else{
+			return "";
+		}
 	}
 
 	public static BaseBean getInstance(Map<String, String> data) {

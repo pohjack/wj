@@ -9,7 +9,7 @@ import com.mybatis.mybatis.sqlutil.entitybean.MerchantBean;
  * @author: wj
  * @version:  v1
  * @date:2017年12月23日 下午2:48:15
- * @description:
+ * @description:基于vo对象，实现增删改查，动态拼接sql(SQL工具类)，VOUtils(vo工具类)  
  */
 public class TestSql {
 	public static void main(String[] args) {
@@ -28,7 +28,11 @@ public class TestSql {
 		data.put("merchant_name", "肯德基");
 		data.put("brand", "34");
 		MerchantBean bean1=(MerchantBean) MerchantBean.getInstance(data);
+		bean1.setBrand("34");
+		bean1.setMerchantId("1234");
+		bean1.setMerchantName("肯德基");
 		System.out.println(bean1);
+		System.out.println(bean1.generateSql());
 	}
 	
 

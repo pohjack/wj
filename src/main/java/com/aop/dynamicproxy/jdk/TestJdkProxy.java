@@ -1,7 +1,5 @@
 package com.aop.dynamicproxy.jdk;
 
-import java.lang.reflect.Constructor;
-
 public class TestJdkProxy {
 	/**
 	 * jdk动态代理实现原理分析
