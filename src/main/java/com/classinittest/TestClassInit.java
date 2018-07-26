@@ -11,6 +11,8 @@ public class TestClassInit {
 		new Son();
 		System.out.println("----------------------");
 		new Son();
+		System.out.println("----------------------");
+		new Father();
 	}
 	/*
 		运行结果如下：
