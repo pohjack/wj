@@ -1,6 +1,8 @@
 package com.sqlBuildUtil.sqlbuilder;
 
 /**
+ * 
+ * @author wj
  * 通用字符串工具类
  */
 public class CommonStringUtils {

@@ -11,6 +11,8 @@ import com.sqlBuildUtil.annotation.TableName;
 import com.sqlBuildUtil.annotation.TablePKField;
 
 /**
+ * 
+ * @author wj
  * 根据VO对象动态生成sql
  */
 public  abstract class BaseVo {
@@ -26,7 +28,14 @@ public  abstract class BaseVo {
     private static final int SELECT = 3;
     private static final int DELETE = 4;
     private SQL sqlBuilder = null;
-
+    
+    /**
+     * 
+     * @author: wj
+     * @version:  v1
+     * @date:2018年7月26日 下午4:54:55
+     * @description:子类必须实现，注入自身实例到父类中
+     */
     public abstract void setSelf();
 
     private void initMataInfo() throws IllegalAccessException {
@@ -34,7 +43,7 @@ public  abstract class BaseVo {
         this.tableName = ta.table();
         this.fieldNameConvert = ta.fieldNameConvert();
         Field[] fields = self.getClass().getDeclaredFields();
-        columns = new HashMap<String, String>();
+        columns = new HashMap<String, String>(12);
         if (fields != null && fields.length > 0) {
             for (Field f : fields) {
                 f.setAccessible(true);
@@ -106,6 +115,8 @@ public  abstract class BaseVo {
                     sqlBuilder.WHERE(tablePkName + "=" + tablePkValue);
                 }
                 break;
+           default:
+        	   break;
         }
         return sqlBuilder.toString();
     }
