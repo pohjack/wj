@@ -5,6 +5,18 @@
 	<groupId>com.wujian.demo</groupId>
 	<artifactId>wj</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<packaging>war</packaging>
 
 	<name>wj</name>
@@ -40,11 +52,11 @@
 		</dependency>
 
 		<!--oracle数据库驱动包 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>1.0</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<!-- 包含很多很多java工具类 -->
@@ -142,7 +154,24 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.7.3</version>
 		</dependency>
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
 
 
 	</dependencies>
