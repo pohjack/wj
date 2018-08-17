@@ -1,16 +1,15 @@
 package com.mybatis.mybatis.test;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.mybatis.mybatis.bean.ProductCode;
+import com.mybatis.mybatis.dao.ProductCodeMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.mybatis.mybatis.bean.ProductCode;
-import com.mybatis.mybatis.dao.ProductCodeMapper;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 1、接口式编程
