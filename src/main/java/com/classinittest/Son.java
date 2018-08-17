@@ -8,22 +8,24 @@ package com.classinittest;
 public class Son extends Father {
 	private String sonName="son";
 	private String sonDesc="son's desc";
+	public static final String desc="desc..";
 	
-	/*
+	/**
 	 * 子类普通代码块
 	 */
 	{
 		System.out.println("son's common code block init......");
 	}
 	
-	/*
+	/**
 	 * 子类静态代码块
 	 */
 	static{
 		System.out.println("son's static code block init.....");
+		System.out.println(desc);
 	}
 	
-	/*
+	/**
 	 * 子类构造器
 	 */
 	public Son(){
